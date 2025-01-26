@@ -2,7 +2,6 @@ import api from './api';
 
 // Get Learning Path
 // GET /api/learning-paths/:id
-// Response: { id: string, topic: string, level: string, pace: string, goals: string[], resources: Array<{ type: string, title: string, url: string }>, progress: number }
 export const getLearningPath = (id: string) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -25,8 +24,6 @@ export const getLearningPath = (id: string) => {
 
 // Create Learning Path
 // POST /api/learning-paths
-// Request: { topic: string, level: string, pace: string, goals: string[] }
-// Response: { id: string, message: string, learningPath: { _id: string, topic: string, level: string, pace: string, goals: string[], resources: Array<{ type: string, title: string, url: string }>, progress: number, createdAt: string } }
 export const createLearningPath = async (data: { topic: string; level: string; pace: string; goals: string[] }) => {
   try {
     console.log('Attempting to create learning path with data:', data);
