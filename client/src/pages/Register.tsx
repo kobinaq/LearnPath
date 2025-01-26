@@ -25,7 +25,11 @@ export function Register() {
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
-  const { register, handleSubmit } = useForm<RegisterForm>()
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm<RegisterForm>()
 
   const onSubmit = async (data: RegisterForm) => {
     try {
@@ -36,12 +40,12 @@ export function Register() {
         description: "Account created successfully",
       })
       navigate("/login")
-    } catch (error) {
-      console.log("Register error:", error)
+    } catch (error: any) { // Type the error
+      console.error("Register error:", error)
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.response?.data?.error,
+        description: error.response?.data?.error || "Failed to create account",
       })
     } finally {
       setLoading(false)
@@ -63,8 +67,18 @@ export function Register() {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                {...register("email", { required: true })}
+                {...register("email", { 
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address"
+                  }
+                })}
+                className={errors.email ? "border-red-500" : ""}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -72,12 +86,29 @@ export function Register() {
                 id="password"
                 type="password"
                 placeholder="Choose a password"
-                {...register("password", { required: true })}
+                {...register("password", { 
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters"
+                  }
+                })}
+                className={errors.password ? "border-red-500" : ""}
               />
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              )}
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+              type="submit" 
+              className="w-full" 
+              disabled={loading}
+            >
               {loading ? (
-                "Loading..."
+                <div className="flex items-center">
+                  <div className="w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin mr-2" />
+                  Creating account...
+                </div>
               ) : (
                 <>
                   <UserPlus className="mr-2 h-4 w-4" />
