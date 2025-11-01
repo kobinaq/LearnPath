@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -11,10 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { createLearningPath } from "@/api/learning-paths"
+import { subscriptionApi } from "@/api/subscriptions"
 import { useToast } from "@/hooks/useToast"
-import { X } from "lucide-react"
+import { X, Zap, AlertCircle, Sparkles } from "lucide-react"
 
 type FormData = {
   topic: string
@@ -41,9 +43,26 @@ const paceLevels = [
 export function CreatePath() {
   const [loading, setLoading] = useState(false)
   const [goals, setGoals] = useState<string[]>([])
+  const [subscription, setSubscription] = useState<any>(null)
+  const [loadingSubscription, setLoadingSubscription] = useState(true)
   const { toast } = useToast()
   const navigate = useNavigate()
   const { control, register, handleSubmit } = useForm<FormData>()
+
+  useEffect(() => {
+    loadSubscriptionData()
+  }, [])
+
+  const loadSubscriptionData = async () => {
+    try {
+      const subData = await subscriptionApi.getCurrentSubscription()
+      setSubscription(subData)
+    } catch (error) {
+      console.error('Error loading subscription:', error)
+    } finally {
+      setLoadingSubscription(false)
+    }
+  }
 
   const addGoal = () => {
     setGoals([...goals, ""])
@@ -72,31 +91,79 @@ export function CreatePath() {
         })
         return
       }
+
+      // Check credits before creating
+      if (subscription && subscription.credits < 1) {
+        toast({
+          variant: "destructive",
+          title: "Insufficient Credits",
+          description: "You don't have enough credits. Please upgrade your plan.",
+        })
+        navigate('/pricing')
+        return
+      }
+
       await createLearningPath({
         ...data,
+        pace: data.pace.toLowerCase(),
         goals: filteredGoals,
       })
       toast({
         title: "Success",
-        description: "Learning path created successfully",
+        description: "Learning path created successfully! Generate course content to unlock AI-powered resources.",
       })
       navigate("/paths")
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create learning path",
+        description: error.message || "Failed to create learning path",
       })
     } finally {
       setLoading(false)
     }
   }
 
+  const hasEnoughCredits = subscription ? subscription.credits >= 1 : true
+
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto space-y-6">
+      {/* Credit Usage Info */}
+      {!loadingSubscription && subscription && (
+        <Alert className={hasEnoughCredits ? "border-blue-500 bg-blue-50" : "border-red-500 bg-red-50"}>
+          <Zap className={`h-4 w-4 ${hasEnoughCredits ? 'text-blue-600' : 'text-red-600'}`} />
+          <AlertDescription className="ml-2">
+            {hasEnoughCredits ? (
+              <div>
+                <strong>Credits Available:</strong> {subscription.credits} credits remaining
+                <p className="text-sm mt-1 text-muted-foreground">
+                  After creating a path, use 1 credit to generate AI-powered course content with YouTube videos and articles.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <strong>No Credits Available</strong>
+                <p className="text-sm mt-1">
+                  You need credits to generate AI course content.
+                  <Button variant="link" className="p-0 h-auto ml-1" onClick={() => navigate('/pricing')}>
+                    Upgrade your plan
+                  </Button>
+                </p>
+              </div>
+            )}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <Card>
         <CardHeader>
-          <CardTitle>Create Learning Path</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5" />
+            Create Learning Path
+          </CardTitle>
+          <CardDescription>
+            Set up your learning path with topic, level, and goals. Then generate AI-powered course content!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

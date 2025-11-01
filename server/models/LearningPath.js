@@ -28,7 +28,7 @@ const learningPathSchema = new mongoose.Schema({
     type: {
       type: String,
       required: true,
-      enum: ['video', 'article', 'course']
+      enum: ['video', 'article', 'course', 'playlist']
     },
     title: {
       type: String,
@@ -37,13 +37,29 @@ const learningPathSchema = new mongoose.Schema({
     url: {
       type: String,
       required: true
-    }
+    },
+    description: String,
+    thumbnail: String,
+    source: String,
+    channelTitle: String,
+    publishedAt: Date,
+    videoId: String,
+    playlistId: String,
+    priority: Number,
   }],
+  courseData: {
+    type: mongoose.Schema.Types.Mixed,
+    default: null,
+  },
   progress: {
     type: Number,
     default: 0
   },
   createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
     type: Date,
     default: Date.now
   }
