@@ -29,8 +29,9 @@ A comprehensive web application that generates personalized, project-based learn
 - **Database**: MongoDB with Mongoose ODM
 - **Authentication**: express-session with bcrypt
 - **AI Integration**:
-  - Anthropic Claude SDK (primary)
-  - OpenAI SDK (fallback)
+  - Google Gemini API (primary - **FREE tier available**)
+  - Anthropic Claude SDK (alternative)
+  - OpenAI SDK (alternative)
 - **APIs**:
   - YouTube Data API v3
   - Google Custom Search API (optional)
@@ -51,8 +52,9 @@ A comprehensive web application that generates personalized, project-based learn
 - Node.js (v16 or higher)
 - MongoDB (local or cloud instance)
 - API Keys:
-  - Anthropic API key OR OpenAI API key (for course generation)
+  - **Google Gemini API key** (for course generation - **FREE tier available** at https://ai.google.dev/)
   - YouTube Data API v3 key (for video curation)
+  - Optional alternatives: Anthropic API key OR OpenAI API key
   - Google Custom Search API key (optional, for articles)
 
 ### Installation
@@ -90,9 +92,13 @@ A comprehensive web application that generates personalized, project-based learn
    ```env
    DATABASE_URL=mongodb://localhost:27017/learnpath
    SESSION_SECRET=your-secure-session-secret
-   ANTHROPIC_API_KEY=your-anthropic-key
+   GEMINI_API_KEY=your-gemini-key
    YOUTUBE_API_KEY=your-youtube-key
    ```
+
+   **Getting API Keys:**
+   - **Gemini API** (FREE): Visit https://ai.google.dev/ and create an API key
+   - **YouTube API** (FREE): Visit https://console.cloud.google.com/ and enable YouTube Data API v3
 
 4. **Start MongoDB**
    ```bash
@@ -207,9 +213,10 @@ See `.env.example` for full list. Key variables:
 
 - `DATABASE_URL`: MongoDB connection string
 - `SESSION_SECRET`: Secret for session encryption
-- `ANTHROPIC_API_KEY`: Claude API key (recommended)
-- `OPENAI_API_KEY`: OpenAI API key (alternative)
-- `YOUTUBE_API_KEY`: YouTube Data API v3 key
+- `GEMINI_API_KEY`: Google Gemini API key (primary - **FREE tier available**)
+- `YOUTUBE_API_KEY`: YouTube Data API v3 key (**FREE tier available**)
+- `ANTHROPIC_API_KEY`: Claude API key (optional alternative)
+- `OPENAI_API_KEY`: OpenAI API key (optional alternative)
 - `GOOGLE_SEARCH_API_KEY`: Google Custom Search key (optional)
 
 ## Deployment
@@ -274,8 +281,9 @@ For issues and questions:
 ## Credits
 
 Built with:
-- Anthropic Claude AI
-- OpenAI GPT
+- Google Gemini AI (primary AI provider with FREE tier)
+- Anthropic Claude AI (alternative)
+- OpenAI GPT (alternative)
 - YouTube Data API
 - MongoDB
 - React & TypeScript

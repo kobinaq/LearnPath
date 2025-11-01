@@ -16,10 +16,10 @@ async function generateCourse(topic, level, pace, goals) {
     // Build the LLM prompt for course generation
     const prompt = buildCoursePrompt(topic, level, pace, goals);
 
-    // Use Anthropic as primary (more cost-effective for this use case)
+    // Use Gemini as primary (free tier available with good capabilities)
     const response = await llmService.sendLLMRequest(
-      'anthropic',
-      'claude-3-5-sonnet-20241022',
+      'gemini',
+      'gemini-1.5-flash',
       prompt
     );
 

@@ -1,6 +1,7 @@
 const axios = require('axios');
 const OpenAI = require('openai');
 const Anthropic = require('@anthropic-ai/sdk');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -12,6 +13,8 @@ const openai = new OpenAI({
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
@@ -56,12 +59,34 @@ async function sendRequestToAnthropic(model, message) {
   }
 }
 
+async function sendRequestToGemini(model, message) {
+  for (let i = 0; i < MAX_RETRIES; i++) {
+    try {
+      console.log(`Sending request to Gemini with model: ${model}`);
+      const geminiModel = genAI.getGenerativeModel({ model: model });
+
+      const result = await geminiModel.generateContent(message);
+      const response = await result.response;
+      const text = response.text();
+
+      console.log(`Received response from Gemini`);
+      return text;
+    } catch (error) {
+      console.error(`Error sending request to Gemini (attempt ${i + 1}):`, error.message, error.stack);
+      if (i === MAX_RETRIES - 1) throw error;
+      await sleep(RETRY_DELAY);
+    }
+  }
+}
+
 async function sendLLMRequest(provider, model, message) {
   switch (provider.toLowerCase()) {
     case 'openai':
       return sendRequestToOpenAI(model, message);
     case 'anthropic':
       return sendRequestToAnthropic(model, message);
+    case 'gemini':
+      return sendRequestToGemini(model, message);
     default:
       throw new Error(`Unsupported LLM provider: ${provider}`);
   }
