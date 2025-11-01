@@ -27,12 +27,19 @@ LearnPath is a full-stack application with:
 
 4. **Add environment variables**:
    ```
-   DATABASE_URL=mongodb+srv://your-mongodb-atlas-url
-   SESSION_SECRET=your-random-secret-key-here
+   DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/learnpath
+   SESSION_SECRET=your-random-secret-key-here-make-it-long-and-secure
    GEMINI_API_KEY=your-gemini-api-key
    YOUTUBE_API_KEY=your-youtube-api-key
    PORT=3000
+   NODE_ENV=production
    ```
+
+   **Where to get API keys:**
+   - **DATABASE_URL**: From MongoDB Atlas (Step 1 above)
+   - **GEMINI_API_KEY**: https://ai.google.dev/ (FREE)
+   - **YOUTUBE_API_KEY**: https://console.cloud.google.com/ (FREE)
+   - **SESSION_SECRET**: Generate with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 
 5. **Get your backend URL**:
    - Railway will provide a URL like: `https://your-app.up.railway.app`
@@ -53,37 +60,29 @@ LearnPath is a full-stack application with:
    - Start Command: `npm start`
    - Instance Type: Free
 
-4. **Add environment variables** (same as Railway above)
+4. **Add environment variables** (same as Railway above):
+   ```
+   DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/learnpath
+   SESSION_SECRET=your-random-secret-key
+   GEMINI_API_KEY=your-gemini-api-key
+   YOUTUBE_API_KEY=your-youtube-api-key
+   PORT=3000
+   NODE_ENV=production
+   ```
 
 5. **Deploy** and save your URL
 
 ## Step 2: Set Up MongoDB
 
-### MongoDB Atlas (Free Tier)
+**✅ Already done in Step 1!** You should have:
+- MongoDB Atlas cluster running
+- Database user created
+- Connection string ready
+- Connection string added to backend environment variables
 
-1. **Create account**: https://www.mongodb.com/cloud/atlas
+If not, see [MONGODB_ATLAS_SETUP.md](MONGODB_ATLAS_SETUP.md) for detailed instructions.
 
-2. **Create a cluster**:
-   - Choose Free tier (M0)
-   - Select a region close to your backend
-
-3. **Create database user**:
-   - Go to Database Access
-   - Add New Database User
-   - Save username and password
-
-4. **Whitelist IP addresses**:
-   - Go to Network Access
-   - Click "Add IP Address"
-   - Select "Allow Access from Anywhere" (0.0.0.0/0)
-   - Or add specific IPs from Railway/Render
-
-5. **Get connection string**:
-   - Click "Connect" on your cluster
-   - Choose "Connect your application"
-   - Copy the connection string
-   - Replace `<password>` with your database password
-   - Add this to your backend's `DATABASE_URL` environment variable
+---
 
 ## Step 3: Deploy Frontend to Vercel
 
@@ -160,12 +159,24 @@ After deploying frontend, update your backend to allow requests from Vercel:
 
 ### Backend (Railway/Render)
 ```env
-DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/learnpath
+# Database (from MongoDB Atlas)
+DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/learnpath?retryWrites=true&w=majority
+
+# Security
 SESSION_SECRET=generate-a-random-32-character-string
-GEMINI_API_KEY=your-gemini-api-key
-YOUTUBE_API_KEY=your-youtube-api-key
+
+# AI & APIs (all FREE tier available)
+GEMINI_API_KEY=your-gemini-api-key-from-ai.google.dev
+YOUTUBE_API_KEY=your-youtube-api-key-from-google-cloud
+
+# Server
 PORT=3000
 NODE_ENV=production
+```
+
+**How to generate SESSION_SECRET:**
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
 ### Frontend (Vercel)

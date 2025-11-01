@@ -222,8 +222,14 @@ See `.env.example` for full list. Key variables:
 ## Deployment
 
 **📖 See [DEPLOYMENT.md](DEPLOYMENT.md) for complete step-by-step deployment guide.**
+**📖 See [MONGODB_ATLAS_SETUP.md](MONGODB_ATLAS_SETUP.md) for MongoDB Atlas setup.**
 
 ### Quick Overview
+
+**Database (MongoDB Atlas):**
+- Free tier: 512MB storage
+- Detailed setup guide in MONGODB_ATLAS_SETUP.md
+- Get connection string and add to backend
 
 **Frontend (Vercel):**
 - Automatically configured with `vercel.json`
@@ -234,10 +240,6 @@ See `.env.example` for full list. Key variables:
 - Deploy from `server/` directory
 - Add environment variables (see DEPLOYMENT.md)
 - Get your backend URL
-
-**Database (MongoDB Atlas):**
-- Free tier available
-- 512MB storage included
 
 **All services have FREE tiers!** Total cost: $0/month for getting started.
 
