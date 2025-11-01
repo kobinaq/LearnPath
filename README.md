@@ -221,15 +221,25 @@ See `.env.example` for full list. Key variables:
 
 ## Deployment
 
-### Backend Deployment
-1. Set up MongoDB (MongoDB Atlas recommended)
-2. Configure environment variables on your hosting platform
-3. Deploy to your preferred Node.js hosting (Heroku, Railway, Render, etc.)
+**📖 See [DEPLOYMENT.md](DEPLOYMENT.md) for complete step-by-step deployment guide.**
 
-### Frontend Deployment
-1. Update `VITE_API_URL` to point to your backend URL
-2. Build: `npm run build`
-3. Deploy `dist/` folder to static hosting (Vercel, Netlify, Cloudflare Pages)
+### Quick Overview
+
+**Frontend (Vercel):**
+- Automatically configured with `vercel.json`
+- Just connect your GitHub repo and deploy
+- Set `VITE_API_URL` environment variable
+
+**Backend (Railway/Render):**
+- Deploy from `server/` directory
+- Add environment variables (see DEPLOYMENT.md)
+- Get your backend URL
+
+**Database (MongoDB Atlas):**
+- Free tier available
+- 512MB storage included
+
+**All services have FREE tiers!** Total cost: $0/month for getting started.
 
 ## Development
 
