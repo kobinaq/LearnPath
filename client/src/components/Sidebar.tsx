@@ -1,4 +1,4 @@
-import { HomeIcon, BookOpenIcon, AwardIcon, SettingsIcon } from "lucide-react";
+import { HomeIcon, BookOpenIcon, AwardIcon, SettingsIcon, CreditCardIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -11,6 +11,7 @@ export function Sidebar() {
     { icon: HomeIcon, label: "Dashboard", path: "/" },
     { icon: BookOpenIcon, label: "Learning Paths", path: "/paths" },
     { icon: AwardIcon, label: "Assessments", path: "/assessments" },
+    { icon: CreditCardIcon, label: "Pricing", path: "/pricing" },
     { icon: SettingsIcon, label: "Settings", path: "/settings" },
   ];
 

@@ -9,6 +9,7 @@ const authRoutes = require("./routes/auth");
 const { authenticateWithToken } = require('./routes/middleware/auth');
 const cors = require("cors");
 const learningPathRoutes = require('./routes/learning-paths');
+const subscriptionRoutes = require('./routes/subscriptions');
 
 if (!process.env.DATABASE_URL || !process.env.SESSION_SECRET) {
   console.error("Error: DATABASE_URL or SESSION_SECRET variables in .env missing.");
@@ -80,6 +81,8 @@ app.use(basicRoutes);
 app.use('/api/auth', authRoutes);
 // Learning Path Routes
 app.use('/api/learning-paths', learningPathRoutes);
+// Subscription Routes
+app.use('/api/subscriptions', subscriptionRoutes);
 
 // If no routes handled the request, it's a 404
 app.use((req, res, next) => {

@@ -10,6 +10,7 @@ import { Dashboard } from "./pages/Dashboard"
 import { LearningPaths } from "./pages/LearningPaths"
 import { CreatePath } from "./pages/CreatePath"
 import { Assessment } from "./pages/Assessment"
+import Pricing from "./pages/Pricing"
 import axios from 'axios'
 
 axios.interceptors.request.use(config => {
@@ -33,6 +34,7 @@ function App() {
               <Route path="paths" element={<LearningPaths />} />
               <Route path="paths/new" element={<CreatePath />} />
               <Route path="assessments" element={<Assessment />} />
+              <Route path="pricing" element={<Pricing />} />
             </Route>
           </Routes>
           <Toaster />
