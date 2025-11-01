@@ -21,7 +21,7 @@ export function Assessment() {
 
   useEffect(() => {
     const fetchAssessment = async () => {
-      const response = await getAssessment("1")
+      const response = await getAssessment("1") as { questions: Question[] };
       setQuestions(response.questions)
     }
     fetchAssessment()

@@ -13,19 +13,17 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return true; // this is just a placeholder - remove when the backend is being implemented
     return !!localStorage.getItem("token");
   });
 
   const login = async (email: string, password: string) => {
     try {
-      return await setTimeout(() => {setIsAuthenticated(true)}, 1000); // this is just a placeholder - remove when the backend is being implemented
       const response = await apiLogin(email, password);
-      if (response.data?.token) {
-        localStorage.setItem("token", response.data.token);
+      if (response.token) {
+        localStorage.setItem("token", response.token);
         setIsAuthenticated(true);
       } else {
-        throw new Error(response.data.error || "Login failed");
+        throw new Error("Login failed");
       }
     } catch (error) {
       localStorage.removeItem("token");
@@ -36,13 +34,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (email: string, password: string) => {
     try {
-      return await setTimeout(() => {setIsAuthenticated(true)}, 1000); // this is just a placeholder - remove when the backend is being implemented
-      const response = await apiRegister(email, password);
-      if (response.data?.token) {
-        localStorage.setItem("token", response.data.token);
+      const response = await apiRegister({ email, password });
+      if (response.user?.token) {
+        localStorage.setItem("token", response.user.token);
         setIsAuthenticated(true);
       } else {
-        throw new Error(response.data.error || "Registration failed");
+        throw new Error("Registration failed");
       }
     } catch (error) {
       localStorage.removeItem("token");

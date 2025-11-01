@@ -29,18 +29,18 @@ export function Login() {
   const onSubmit = async (data: LoginForm) => {
     try {
       setLoading(true)
-      let response = await login(data.email, data.password);
-      localStorage.setItem('token', response.data.token); // Save token to local storage
+      const response = await login(data.email, data.password);
+      localStorage.setItem('token', response.token);
       toast({
         title: "Success",
         description: "Logged in successfully",
       })
       navigate("/")
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.response?.data?.error,
+        description: error?.message || "Login failed",
       })
     } finally {
       setLoading(false)

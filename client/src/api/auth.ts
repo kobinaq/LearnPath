@@ -1,4 +1,4 @@
-import api from './api';
+import api from './Api';
 
 // Login
 // POST /auth/login
@@ -8,7 +8,7 @@ export const login = async (email: string, password: string) => {
   try {
     const response = await api.post('/auth/login', { email, password });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error?.response?.data?.error || error.message);
   }
 };
@@ -21,7 +21,7 @@ export const register = async (data: { email: string; password: string }) => {
   try {
     const response = await api.post('/auth/register', data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error?.response?.data?.error || error.message);
   }
 };
@@ -33,7 +33,7 @@ export const logout = async () => {
   try {
     const response = await api.post('/auth/logout');
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(error?.response?.data?.error || error.message);
   }
 };

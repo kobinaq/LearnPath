@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { PlusCircle, ArrowRight, Sparkles, Loader2, Video, FileText, ExternalLink } from "lucide-react"
+import { PlusCircle, ArrowRight, Sparkles, Loader2, Video, FileText } from "lucide-react"
 import { getAllLearningPaths, generateCourse, LearningPath } from "@/api/learning-paths"
 import { toast } from "sonner"
 
