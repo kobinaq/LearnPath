@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card"
 import { useToast } from "@/hooks/useToast"
 import { UserPlus } from "lucide-react"
-import { register as registerUser } from "@/api/auth"
+import { useAuth } from "@/contexts/AuthContext"
 
 type RegisterForm = {
   email: string
@@ -25,27 +25,28 @@ export function Register() {
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors } 
+  const { register: registerUser } = useAuth()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
   } = useForm<RegisterForm>()
 
   const onSubmit = async (data: RegisterForm) => {
     try {
       setLoading(true)
-      await registerUser(data);
+      await registerUser(data.email, data.password);
       toast({
         title: "Success",
         description: "Account created successfully",
       })
-      navigate("/login")
-    } catch (error: any) { // Type the error
+      navigate("/")
+    } catch (error: any) {
       console.error("Register error:", error)
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.response?.data?.error || "Failed to create account",
+        description: error?.message || "Failed to create account",
       })
     } finally {
       setLoading(false)

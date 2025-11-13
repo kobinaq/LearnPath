@@ -11,15 +11,6 @@ import { LearningPaths } from "./pages/LearningPaths"
 import { CreatePath } from "./pages/CreatePath"
 import { Assessment } from "./pages/Assessment"
 import Pricing from "./pages/Pricing"
-import axios from 'axios'
-
-axios.interceptors.request.use(config => {
-  const token = localStorage.getItem("token");
-  if (token && !config.headers.Authorization) {
-    config.headers.Authorization = `Token ${token}`
-  }
-  return config
-})
 
 function App() {
   return (
