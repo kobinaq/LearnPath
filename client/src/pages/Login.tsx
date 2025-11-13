@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { useToast } from "@/hooks/useToast"
 import { LogIn } from "lucide-react"
-import { login } from "@/api/auth"
+import { useAuth } from "@/contexts/AuthContext"
 
 type LoginForm = {
   email: string
@@ -24,23 +24,23 @@ export function Login() {
   const [loading, setLoading] = useState(false)
   const { toast } = useToast()
   const navigate = useNavigate()
+  const { login } = useAuth()
   const { register, handleSubmit } = useForm<LoginForm>()
 
   const onSubmit = async (data: LoginForm) => {
     try {
       setLoading(true)
-      let response = await login(data.email, data.password);
-      localStorage.setItem('token', response.data.token); // Save token to local storage
+      await login(data.email, data.password);
       toast({
         title: "Success",
         description: "Logged in successfully",
       })
       navigate("/")
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.response?.data?.error,
+        description: error?.message || "Failed to login",
       })
     } finally {
       setLoading(false)

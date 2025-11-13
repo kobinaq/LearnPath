@@ -1,15 +1,15 @@
-import api from './api';
+import api from './Api';
 
 // Login
 // POST /auth/login
 // Request: { email: string, password: string }
-// Response: { success: boolean, message: string }
+// Response: User object with token
 export const login = async (email: string, password: string) => {
   try {
     const response = await api.post('/auth/login', { email, password });
     return response.data;
-  } catch (error) {
-    throw new Error(error?.response?.data?.error || error.message);
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.error || error?.message || 'Login failed');
   }
 };
 
@@ -21,8 +21,8 @@ export const register = async (data: { email: string; password: string }) => {
   try {
     const response = await api.post('/auth/register', data);
     return response.data;
-  } catch (error) {
-    throw new Error(error?.response?.data?.error || error.message);
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.error || error?.message || 'Registration failed');
   }
 };
 
