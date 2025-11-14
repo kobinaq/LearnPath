@@ -1,10 +1,8 @@
-import api from './Api';
-
 // Update Progress
 // POST /api/progress/:pathId
 // Request: { completed: number }
 // Response: { success: boolean, message: string }
-export const updateProgress = (pathId: string, completed: number) => {
+export const updateProgress = (_pathId: string, _completed: number) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ success: true, message: 'Progress updated successfully' });
@@ -15,7 +13,7 @@ export const updateProgress = (pathId: string, completed: number) => {
 // Get Assessment
 // GET /api/assessment/:pathId
 // Response: { questions: Array<{ id: string, question: string, options: string[], correct: number }> }
-export const getAssessment = (pathId: string) => {
+export const getAssessment = (_pathId: string) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({

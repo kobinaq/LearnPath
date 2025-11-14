@@ -16,7 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { createLearningPath } from "@/api/learning-paths"
 import { subscriptionApi } from "@/api/subscriptions"
 import { useToast } from "@/hooks/useToast"
-import { X, Zap, AlertCircle, Sparkles } from "lucide-react"
+import { X, Zap, Sparkles } from "lucide-react"
 
 type FormData = {
   topic: string
