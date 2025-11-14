@@ -1,12 +1,16 @@
 {
   "name": "LearnPath AI",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "AI-powered learning platform",
+  "main": "server/server.js",
   "scripts": {
-    "start": "concurrently -n \"client,server\" \"npm run client\" \"npm run server\"",
-    "client": "cd client && npm run dev",
-    "server": "cd server && npm run dev",
+    "start": "node server/server.js",
+    "dev": "concurrently -n \"client,server\" \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "build": "cd client && npm install && npm run build",
+    "postbuild": "cd server && npm install --production",
+    "railway:build": "npm run build && npm run postbuild",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
