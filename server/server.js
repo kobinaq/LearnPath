@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
+const path = require("path");
 const basicRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 const { authenticateWithToken } = require('./routes/middleware/auth');
@@ -26,9 +27,13 @@ app.enable('strict routing');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configure CORS for production
+// Configure CORS
+// In production (Railway), frontend and backend are on same domain, so CORS is simpler
+// In development, allow localhost:5173
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.NODE_ENV === 'production'
+    ? true  // Allow same-origin requests in production
+    : 'http://localhost:5173',  // Allow Vite dev server in development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -92,10 +97,21 @@ app.use('/api/learning-paths', learningPathRoutes);
 // Subscription Routes
 app.use('/api/subscriptions', subscriptionRoutes);
 
-// If no routes handled the request, it's a 404
-app.use((req, res, next) => {
-  res.status(404).send("Page not found.");
-});
+// Serve static files from React build (production only)
+const clientBuildPath = path.join(__dirname, '../client/dist');
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(clientBuildPath));
+
+  // Handle client-side routing - send all non-API requests to React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+} else {
+  // Development mode - if no API route matched, return 404
+  app.use((req, res, next) => {
+    res.status(404).send("API endpoint not found. Frontend dev server runs separately on port 5173.");
+  });
+}
 
 // Error handling
 app.use((err, req, res, next) => {

@@ -5,6 +5,10 @@ client/package-lock.json
 node_modules/
 package-lock.json
 
+# Build output
+client/dist/
+dist/
+
 # Environment variables (contains sensitive API keys and credentials)
 .env
 .env.local

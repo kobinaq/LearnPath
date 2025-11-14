@@ -1,7 +1,18 @@
 import axios from 'axios';
 
+// In production (Railway), API is on same domain at /api
+// In development, API is on localhost:3000
+const getBaseURL = () => {
+  // Check if we're in development mode (Vite dev server)
+  if (import.meta.env.DEV) {
+    return import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+  }
+  // Production: API is on same domain
+  return '/api';
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
